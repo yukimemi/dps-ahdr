@@ -6,7 +6,12 @@ import { start } from "https://deno.land/x/denops_std@v0.3/mod.ts";
 
 start(async (vim) => {
   // debug.
-  const debug = (await vim.g.get("ahdr_debug")) || false;
+  let debug = false;
+  try {
+    debug = await vim.g.get("ahdr_debug");
+  } catch (e) {
+    // console.log(e);
+  }
   const clog = (...data: any[]): void => {
     if (debug) {
       console.log(...data);
@@ -18,11 +23,15 @@ start(async (vim) => {
   let cfg = parse(await Deno.readTextFile(toml));
 
   // User config.
-  const userDefToml = await vim.call("expand", "~/.ahdr.toml");
-  const userToml = (await vim.call(
-    "expand",
-    ((await vim.g.get("ahdr_cfg_path")) || userDefToml) as string
-  )) as string;
+  let userToml = (await vim.call("expand", "~/.ahdr.toml")) as string;
+  try {
+    userToml = (await vim.call(
+      "expand",
+      (await vim.g.get("ahdr_cfg_path")) as string
+    )) as string;
+  } catch (e) {
+    // clog(e);
+  }
   clog(`g:ahdr_cfg_path = ${userToml}`);
   if (await exists(userToml)) {
     clog(`Merge user config: ${userToml}`);
@@ -80,7 +89,7 @@ start(async (vim) => {
 
       await vim.cmd(`silent! set lazyredraw`);
       await vim.cmd(`silent! edit ${outpath}`);
-      await vim.call("silent! setline", 1, outbuf.split(/\r?\n/g));
+      await vim.call("setline", 1, outbuf.split(/\r?\n/g));
       // Fix fenc and ff.
       await vim.execute(`
         silent! setlocal fenc=${fenc}
