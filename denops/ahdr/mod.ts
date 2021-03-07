@@ -1,13 +1,35 @@
 import * as path from "https://deno.land/std@0.89.0/path/mod.ts";
+import { exists } from "https://deno.land/std@0.89.0/fs/mod.ts";
+import { isWindows } from "https://deno.land/std@0.89.0/_util/os.ts";
 import { parse } from "https://deno.land/std@0.89.0/encoding/toml.ts";
 import { start } from "https://deno.land/x/denops_std@v0.3/mod.ts";
-import { isWindows } from "https://deno.land/std@0.89.0/_util/os.ts";
 
 start(async (vim) => {
+  // debug.
+  const debug = (await vim.g.get("ahdr_debug")) || false;
+  const clog = (...data: any[]): void => {
+    if (debug) {
+      console.log(...data);
+    }
+  };
   const pathname = new URL(".", import.meta.url).pathname;
   const dir = isWindows ? pathname.slice(1) : pathname;
   const toml = path.join(dir, "config.toml");
-  const cfg = parse(await Deno.readTextFile(toml));
+  let cfg = parse(await Deno.readTextFile(toml));
+
+  // User config.
+  const userDefToml = await vim.call("expand", "~/.ahdr.toml");
+  const userToml = (await vim.call(
+    "expand",
+    ((await vim.g.get("ahdr_cfg_path")) || userDefToml) as string
+  )) as string;
+  clog(`g:ahdr_cfg_path = ${userToml}`);
+  if (await exists(userToml)) {
+    clog(`Merge user config: ${userToml}`);
+    cfg = { ...cfg, ...parse(await Deno.readTextFile(userToml)) };
+  }
+
+  clog(cfg);
 
   vim.register({
     async adhr(name: unknown): Promise<unknown> {
@@ -19,7 +41,7 @@ start(async (vim) => {
       // Get filetype.
       const ft = (await vim.eval("&filetype")) as string;
 
-      const h = (cfg as Record<string, Record<string, string>[]>)[ft].filter(
+      const h = (cfg as Record<string, Record<string, string>[]>)[ft]?.filter(
         (x) => x.name === name
       )[0];
 
@@ -28,10 +50,10 @@ start(async (vim) => {
         return await Promise.resolve();
       }
 
-      console.log(
+      clog(
         `ft: ${ft}, name: ${h.name}, prefix: ${h.prefix}, suffix: ${h.suffix}, ext: ${h.ext}`
       );
-      console.log(`header: ${h.header}`);
+      clog(`header: ${h.header}`);
 
       // Get buffer info.
       const inpath = (await vim.call("expand", "%:p")) as string;
@@ -51,27 +73,28 @@ start(async (vim) => {
         }`
       );
 
-      console.log(`inpath: ${inpath}`);
-      console.log(`outpath: ${outpath}`);
+      clog(`inpath: ${inpath}`);
+      clog(`outpath: ${outpath}`);
 
-      console.log(`Set fenc: ${fenc}, ff: ${ff} to ${outpath}`);
+      clog(`Set fenc: ${fenc}, ff: ${ff} to ${outpath}`);
 
-      await vim.cmd(`set lazyredraw`);
-      await vim.cmd(`edit ${outpath}`);
-      await vim.call("setline", 1, outbuf.split(/\r?\n/g));
+      await vim.cmd(`silent! set lazyredraw`);
+      await vim.cmd(`silent! edit ${outpath}`);
+      await vim.call("silent! setline", 1, outbuf.split(/\r?\n/g));
       // Fix fenc and ff.
       await vim.execute(`
-        setlocal fenc=${fenc}
-        setlocal ff=${ff}
-        write
-        bwipeout
-        buffer ${bname}
+        silent! setlocal fenc=${fenc}
+        silent! setlocal ff=${ff}
+        silent! write
+        silent! bwipeout
+        silent! buffer ${bname}
       `);
       if (!lz) {
-        await vim.cmd(`set nolazyredraw`);
+        await vim.cmd(`silent! set nolazyredraw`);
       }
 
-      return await Promise.resolve(`Write [${outpath}]`);
+      console.log(`Write [${outpath}]`);
+      return await Promise.resolve();
     },
   });
 
@@ -79,5 +102,5 @@ start(async (vim) => {
     command! -nargs=1 DenopsAhdr call denops#notify('${vim.name}', 'adhr', [<q-args>])
   `);
 
-  console.log("dps-ahdr has loaded");
+  clog("dps-ahdr has loaded");
 });
