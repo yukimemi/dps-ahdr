@@ -41,7 +41,7 @@ start(async (vim) => {
   clog(cfg);
 
   vim.register({
-    async adhr(name: unknown): Promise<unknown> {
+    async ahdr(name: unknown): Promise<unknown> {
       if (typeof name !== "string") {
         throw new Error(
           `'name' attribute of 'echo' in ${vim.name} must be string`
@@ -108,7 +108,7 @@ start(async (vim) => {
   });
 
   await vim.execute(`
-    command! -nargs=1 DenopsAhdr call denops#notify('${vim.name}', 'adhr', [<q-args>])
+    command! -nargs=1 DenopsAhdr call denops#notify('${vim.name}', 'ahdr', [<q-args>])
   `);
 
   clog("dps-ahdr has loaded");
