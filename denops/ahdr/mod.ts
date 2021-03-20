@@ -2,16 +2,11 @@ import * as path from "https://deno.land/std@0.89.0/path/mod.ts";
 import { exists } from "https://deno.land/std@0.89.0/fs/mod.ts";
 import { isWindows } from "https://deno.land/std@0.89.0/_util/os.ts";
 import { parse } from "https://deno.land/std@0.89.0/encoding/toml.ts";
-import { start } from "https://deno.land/x/denops_std@v0.3/mod.ts";
+import { start } from "https://deno.land/x/denops_std@v0.4/mod.ts";
 
 start(async (vim) => {
   // debug.
-  let debug = false;
-  try {
-    debug = await vim.g.get("ahdr_debug");
-  } catch (e) {
-    // console.log(e);
-  }
+  const debug = await vim.g.get("ahdr_debug", false);
   const clog = (...data: any[]): void => {
     if (debug) {
       console.log(...data);
@@ -23,15 +18,10 @@ start(async (vim) => {
   let cfg = parse(await Deno.readTextFile(toml));
 
   // User config.
-  let userToml = (await vim.call("expand", "~/.ahdr.toml")) as string;
-  try {
-    userToml = (await vim.call(
-      "expand",
-      (await vim.g.get("ahdr_cfg_path")) as string
-    )) as string;
-  } catch (e) {
-    // clog(e);
-  }
+  const userToml = (await vim.call(
+    "expand",
+    (await vim.g.get("ahdr_cfg_path", "~/.ahdr.toml")) as string
+  )) as string;
   clog(`g:ahdr_cfg_path = ${userToml}`);
   if (await exists(userToml)) {
     clog(`Merge user config: ${userToml}`);
