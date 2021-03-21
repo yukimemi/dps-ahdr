@@ -3,6 +3,7 @@ import { exists } from "https://deno.land/std@0.89.0/fs/mod.ts";
 import { isWindows } from "https://deno.land/std@0.89.0/_util/os.ts";
 import { parse } from "https://deno.land/std@0.89.0/encoding/toml.ts";
 import { start } from "https://deno.land/x/denops_std@v0.4/mod.ts";
+import { ensureDir } from "https://deno.land/std@0.90.0/fs/mod.ts";
 
 start(async (vim) => {
   // debug.
@@ -34,7 +35,7 @@ start(async (vim) => {
     async ahdr(name: unknown): Promise<unknown> {
       if (typeof name !== "string") {
         throw new Error(
-          `'name' attribute of 'echo' in ${vim.name} must be string`
+          `'name' attribute of 'ahdr' in ${vim.name} must be string`
         );
       }
       // Get filetype.
@@ -65,8 +66,9 @@ start(async (vim) => {
       const outbuf = `${h.header}\n${lines.join("\n")}`;
 
       // Get output path.
+      const dst = h.dst ?? "";
       const outpath = path.join(
-        path.dirname(inpath),
+        path.isAbsolute(dst) ? dst : path.join(path.dirname(inpath), dst),
         `${h.prefix}${path.basename(inpath, path.extname(inpath))}${h.suffix}${
           h.ext
         }`
@@ -74,6 +76,8 @@ start(async (vim) => {
 
       clog(`inpath: ${inpath}`);
       clog(`outpath: ${outpath}`);
+
+      await ensureDir(path.dirname(outpath));
 
       clog(`Set fenc: ${fenc}, ff: ${ff} to ${outpath}`);
 
