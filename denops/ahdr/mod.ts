@@ -81,8 +81,15 @@ start(async (vim) => {
 
       clog(`Set fenc: ${fenc}, ff: ${ff} to ${outpath}`);
 
-      await vim.cmd(`silent! set lazyredraw`);
-      await vim.cmd(`silent! edit ${outpath}`);
+      if (await exists(outpath)) {
+        clog(`Remove ${outpath}`);
+        await Deno.remove(outpath);
+      }
+
+      await vim.execute(`
+        silent! set lazyredraw
+        silent! edit ${outpath}
+      `);
       await vim.call("setline", 1, outbuf.split(/\r?\n/g));
       // Fix fenc and ff.
       await vim.execute(`
