@@ -1,9 +1,9 @@
 import * as path from "https://deno.land/std@0.89.0/path/mod.ts";
+import { ensureDir } from "https://deno.land/std@0.90.0/fs/mod.ts";
 import { exists } from "https://deno.land/std@0.89.0/fs/mod.ts";
 import { isWindows } from "https://deno.land/std@0.89.0/_util/os.ts";
 import { parse } from "https://deno.land/std@0.89.0/encoding/toml.ts";
-import { start } from "https://deno.land/x/denops_std@v0.4/mod.ts";
-import { ensureDir } from "https://deno.land/std@0.90.0/fs/mod.ts";
+import { start } from "https://deno.land/x/denops_std@v0.7/mod.ts";
 
 start(async (vim) => {
   // debug.
