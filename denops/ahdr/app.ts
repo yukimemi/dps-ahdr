@@ -1,8 +1,7 @@
-import * as path from "https://deno.land/std@0.89.0/path/mod.ts";
+import * as path from "https://deno.land/std@0.95.0/path/mod.ts";
 import { ensureDir } from "https://deno.land/std@0.90.0/fs/mod.ts";
-import { exists } from "https://deno.land/std@0.89.0/fs/mod.ts";
-import { isWindows } from "https://deno.land/std@0.89.0/_util/os.ts";
-import { parse } from "https://deno.land/std@0.89.0/encoding/toml.ts";
+import { exists } from "https://deno.land/std@0.95.0/fs/mod.ts";
+import { parse } from "https://deno.land/std@0.95.0/encoding/toml.ts";
 import { main } from "https://deno.land/x/denops_std@v0.8/mod.ts";
 
 main(async ({ vim }) => {
@@ -13,8 +12,8 @@ main(async ({ vim }) => {
       console.log(...data);
     }
   };
-  const pathname = new URL(".", import.meta.url).pathname;
-  const dir = isWindows ? pathname.slice(1) : pathname;
+  const pathname = new URL(".", import.meta.url);
+  const dir = path.fromFileUrl(pathname);
   const toml = path.join(dir, "config.toml");
   let cfg = parse(await Deno.readTextFile(toml));
 
