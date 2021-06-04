@@ -1,8 +1,9 @@
+import * as _ from "https://cdn.skypack.dev/lodash@4.17.21";
 import * as path from "https://deno.land/std@0.95.0/path/mod.ts";
-import { ensureDir } from "https://deno.land/std@0.90.0/fs/mod.ts";
+import { ensureDir } from "https://deno.land/std@0.95.0/fs/mod.ts";
 import { exists } from "https://deno.land/std@0.95.0/fs/mod.ts";
 import { parse } from "https://deno.land/std@0.95.0/encoding/toml.ts";
-import { main } from "https://deno.land/x/denops_std@v0.8/mod.ts";
+import { main } from "https://deno.land/x/denops_std@v0.10/mod.ts";
 
 main(async ({ vim }) => {
   // debug.
@@ -25,7 +26,11 @@ main(async ({ vim }) => {
   clog(`g:ahdr_cfg_path = ${userToml}`);
   if (await exists(userToml)) {
     clog(`Merge user config: ${userToml}`);
-    cfg = { ...cfg, ...parse(await Deno.readTextFile(userToml)) };
+    cfg = _.mergeWith(
+      cfg,
+      parse(await Deno.readTextFile(userToml)),
+      (a: Record<string, string>[], b: Record<string, string>[]) => a.concat(b)
+    );
   }
 
   clog(cfg);
@@ -56,13 +61,15 @@ main(async ({ vim }) => {
 
       // Get buffer info.
       const inpath = (await vim.call("expand", "%:p")) as string;
-      const fenc = (await vim.eval("&fenc")) as string;
-      const ff = (await vim.eval("&ff")) as string;
-      const lz = (await vim.eval("&lazyredraw")) as string;
-      const bname = (await vim.call("bufname")) as string;
+      // const fenc = (await vim.eval("&fenc")) as string;
+      // const ff = (await vim.eval("&ff")) as string;
+      // const lz = (await vim.eval("&lazyredraw")) as string;
+      // const bname = (await vim.call("bufname")) as string;
 
       const lines = (await vim.call("getline", 1, "$")) as string[];
-      const outbuf = `${h.header}\n${lines.join("\n")}`;
+      const outbuf = `${h.header}\n${lines.join("\n")}`
+        .split("\n")
+        .join("\r\n");
 
       // Get output path.
       const dst = h.dst ?? "";
@@ -78,29 +85,31 @@ main(async ({ vim }) => {
 
       await ensureDir(path.dirname(outpath));
 
-      clog(`Set fenc: ${fenc}, ff: ${ff} to ${outpath}`);
+      // clog(`Set fenc: ${fenc}, ff: ${ff} to ${outpath}`);
 
       if (await exists(outpath)) {
         clog(`Remove ${outpath}`);
         await Deno.remove(outpath);
       }
 
-      await vim.execute(`
-        silent! set lazyredraw
-        silent! edit ${outpath}
-      `);
-      await vim.call("setline", 1, outbuf.split(/\r?\n/g));
+      await Deno.writeTextFile(outpath, outbuf);
+
+      // await vim.execute(`
+      //   silent! set lazyredraw
+      //   silent! edit ${outpath}
+      // `);
+      // await vim.call("setline", 1, outbuf.split(/\r?\n/g));
       // Fix fenc and ff.
-      await vim.execute(`
-        silent! setlocal fenc=${fenc}
-        silent! setlocal ff=${ff}
-        silent! write
-        silent! bwipeout
-        silent! buffer ${bname}
-      `);
-      if (!lz) {
-        await vim.cmd(`silent! set nolazyredraw`);
-      }
+      // await vim.execute(`
+      //   silent! setlocal fenc=${fenc}
+      //   silent! setlocal ff=${ff}
+      //   silent! write
+      //   silent! bwipeout
+      //   silent! buffer ${bname}
+      // `);
+      // if (!lz) {
+      //   await vim.cmd(`silent! set nolazyredraw`);
+      // }
 
       console.log(`Write [${outpath}]`);
       return await Promise.resolve();
