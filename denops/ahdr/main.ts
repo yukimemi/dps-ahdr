@@ -40,60 +40,66 @@ export async function main(denops: Denops): Promise<void> {
   clog(cfg);
 
   denops.dispatcher = {
+    // deno-lint-ignore require-await
     async ahdr(name: unknown): Promise<void> {
-      ensureString(name);
-      // Get filetype and fileformat.
-      const ft = (await denops.eval("&filetype")) as string;
-      const ff = (await denops.eval("&fileformat")) as string;
+      (async () => {
+        ensureString(name);
+        // Get filetype and fileformat.
+        const ft = (await denops.eval("&filetype")) as string;
+        const ff = (await denops.eval("&fileformat")) as string;
 
-      const h =
-        (cfg as Record<string, Record<string, string>[]>)[ft]?.filter((x) =>
-          x.name === name
+        const h = (cfg as Record<string, Record<string, string>[]>)[ft]?.filter(
+          (x) => x.name === name,
         )[0];
 
-      if (!h) {
-        console.error(`ft: ${ft}, name: ${name} is not found !!!`);
-        return;
-      }
+        if (!h) {
+          console.error(`ft: ${ft}, name: ${name} is not found !!!`);
+          return;
+        }
 
-      clog(
-        `ft: ${ft}, name: ${h.name}, prefix: ${h.prefix}, suffix: ${h.suffix}, ext: ${h.ext}`,
-      );
-      clog(`header: ${h.header}`);
+        clog(
+          `ft: ${ft}, name: ${h.name}, prefix: ${h.prefix}, suffix: ${h.suffix}, ext: ${h.ext}`,
+        );
+        clog(`header: ${h.header}`);
 
-      // Get buffer info.
-      const inpath = (await denops.call("expand", "%:p")) as string;
-      const lines = (await denops.call("getline", 1, "$")) as string[];
-      let outbuf = `${h.header}\n${lines.join("\n")}`;
+        // Get buffer info.
+        const inpath = (await denops.call("expand", "%:p")) as string;
+        let lines as string[] = [];
+        try {
+          lines = (await denops.call("getline", 1, "$")) as string[];
+        } catch (e) {
+          console.log(e);
+          return
+        }
+        let outbuf = `${h.header}\n${lines.join("\n")}`;
 
-      if (ff === "dos") {
-        outbuf = outbuf
-          .split("\n")
-          .join("\r\n");
-      }
+        if (ff === "dos") {
+          outbuf = outbuf.split("\n").join("\r\n");
+        }
 
-      // Get output path.
-      const dst = h.dst ?? "";
-      const outpath = path.join(
-        path.isAbsolute(dst) ? dst : path.join(path.dirname(inpath), dst),
-        `${h.prefix}${
-          path.basename(inpath, path.extname(inpath))
-        }${h.suffix}${h.ext}`,
-      );
+        // Get output path.
+        const dst = h.dst ?? "";
+        const outpath = path.join(
+          path.isAbsolute(dst) ? dst : path.join(path.dirname(inpath), dst),
+          `${h.prefix}${
+            path.basename(inpath, path.extname(inpath))
+          }${h.suffix}${h.ext}`,
+        );
 
-      clog(`inpath: ${inpath}`);
-      clog(`outpath: ${outpath}`);
+        clog(`inpath: ${inpath}`);
+        clog(`outpath: ${outpath}`);
 
-      await fs.ensureDir(path.dirname(outpath));
+        await fs.ensureDir(path.dirname(outpath));
 
-      if (await fs.exists(outpath)) {
-        clog(`Remove ${outpath}`);
-        await Deno.remove(outpath);
-      }
+        if (await fs.exists(outpath)) {
+          clog(`Remove ${outpath}`);
+          await Deno.remove(outpath);
+        }
 
-      await Deno.writeTextFile(outpath, outbuf);
+        await Deno.writeTextFile(outpath, outbuf);
 
-      console.log(`Write [${outpath}]`);
+        console.log(`Write [${outpath}]`);
+      })();
     },
   };
 
