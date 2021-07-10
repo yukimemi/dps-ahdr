@@ -3,6 +3,7 @@ import {
   Denops,
   ensureString,
   execute,
+  fn,
   fs,
   path,
   toml,
@@ -63,13 +64,13 @@ export async function main(denops: Denops): Promise<void> {
         clog(`header: ${h.header}`);
 
         // Get buffer info.
-        const inpath = (await denops.call("expand", "%:p")) as string;
-        let lines as string[] = [];
+        const inpath = (await fn.expand(denops, "%:p")) as string;
+        let lines: string[] = [];
         try {
-          lines = (await denops.call("getline", 1, "$")) as string[];
+          lines = (await fn.getline(denops, 1, "$")) as string[];
         } catch (e) {
           console.log(e);
-          return
+          return;
         }
         let outbuf = `${h.header}\n${lines.join("\n")}`;
 
