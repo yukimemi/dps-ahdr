@@ -41,9 +41,8 @@ export async function main(denops: Denops): Promise<void> {
   clog(cfg);
 
   denops.dispatcher = {
-    // deno-lint-ignore require-await
     async ahdr(name: unknown): Promise<void> {
-      (async () => {
+      try {
         ensureString(name);
         // Get filetype and fileformat.
         const ft = (await denops.eval("&filetype")) as string;
@@ -100,7 +99,9 @@ export async function main(denops: Denops): Promise<void> {
         await Deno.writeTextFile(outpath, outbuf);
 
         console.log(`Write [${outpath}]`);
-      })();
+      } catch (e) {
+        clog(e);
+      }
     },
   };
 
