@@ -67,7 +67,7 @@ export async function main(denops: Denops): Promise<void> {
         const inpath = (await fn.expand(denops, "%:p")) as string;
         let lines: string[] = [];
         try {
-          lines = (await fn.getline(denops, 1, "$")) as string[];
+          lines = await fn.getline(denops, 1, "$");
         } catch (e) {
           console.log(e);
           return;
