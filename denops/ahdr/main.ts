@@ -1,18 +1,18 @@
-import {
-  _,
-  Denops,
-  ensureString,
-  execute,
-  fn,
-  fs,
-  path,
-  toml,
-  vars,
-} from "./deps.ts";
+import * as _ from "https://cdn.skypack.dev/lodash@4.17.21";
+import * as fn from "https://deno.land/x/denops_std@v2.0.0/function/mod.ts";
+import * as fs from "https://deno.land/std@0.108.0/fs/mod.ts";
+import * as helper from "https://deno.land/x/denops_std@v2.0.0/helper/mod.ts";
+import * as op from "https://deno.land/x/denops_std@v2.0.0/option/mod.ts";
+import * as path from "https://deno.land/std@0.108.0/path/mod.ts";
+import * as toml from "https://deno.land/std@0.108.0/encoding/toml.ts";
+import * as vars from "https://deno.land/x/denops_std@v2.0.0/variable/mod.ts";
+import type { Denops } from "https://deno.land/x/denops_std@v2.0.0/mod.ts";
+import { ensureString } from "https://deno.land/x/unknownutil@v1.1.2/mod.ts";
 
 export async function main(denops: Denops): Promise<void> {
   // debug.
   const debug = await vars.g.get(denops, "ahdr_debug", false);
+  // deno-lint-ignore no-explicit-any
   const clog = (...data: any[]): void => {
     if (debug) {
       console.log(...data);
@@ -45,8 +45,8 @@ export async function main(denops: Denops): Promise<void> {
       try {
         ensureString(name);
         // Get filetype and fileformat.
-        const ft = (await denops.eval("&filetype")) as string;
-        const ff = (await denops.eval("&fileformat")) as string;
+        const ft = (await op.filetype.get(denops));
+        const ff = (await op.fileformat.get(denops));
 
         const h = (cfg as Record<string, Record<string, string>[]>)[ft]?.filter(
           (x) => x.name === name,
@@ -64,13 +64,7 @@ export async function main(denops: Denops): Promise<void> {
 
         // Get buffer info.
         const inpath = (await fn.expand(denops, "%:p")) as string;
-        let lines: string[] = [];
-        try {
-          lines = await fn.getline(denops, 1, "$");
-        } catch (e) {
-          console.log(e);
-          return;
-        }
+        const lines = await fn.getline(denops, 1, "$");
         let outbuf = `${h.header}\n${lines.join("\n")}`;
 
         if (ff === "dos") {
@@ -105,7 +99,7 @@ export async function main(denops: Denops): Promise<void> {
     },
   };
 
-  await execute(
+  await helper.execute(
     denops,
     `
     command! -nargs=1 DenopsAhdr call denops#notify('${denops.name}', 'ahdr', [<q-args>])
