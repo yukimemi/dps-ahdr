@@ -4,7 +4,7 @@ prefix = ""
 suffix = ""
 ext = ".cmd"
 header = '''
-@set __SCRIPTPATH=%~f0&@powershell -NoProfile -ExecutionPolicy ByPass -InputFormat None "$s=[scriptblock]::create((gc -enc utf8 -li \\"%~f0\\"|?{$_.readcount -gt 2})-join\\"`n\\");&$s" %*
+@set __SCRIPTPATH=%~f0&@powershell -NoProfile -ExecutionPolicy ByPass -InputFormat None "$s=[scriptblock]::create((gc -enc utf8 -li \"%~f0\"|?{$_.readcount -gt 2})-join\"`n\");&$s" %*
 @exit /b %errorlevel%
 '''
 
@@ -14,7 +14,7 @@ prefix = ""
 suffix = "_p"
 ext = ".cmd"
 header = '''
-@set __SCRIPTPATH=%~f0&@powershell -NoProfile -ExecutionPolicy ByPass -InputFormat None "$s=[scriptblock]::create((gc -enc utf8 -li \\"%~f0\\"|?{$_.readcount -gt 2})-join\\"`n\\");&$s" %*&@pause
+@set __SCRIPTPATH=%~f0&@powershell -NoProfile -ExecutionPolicy ByPass -InputFormat None "$s=[scriptblock]::create((gc -enc utf8 -li \"%~f0\"|?{$_.readcount -gt 2})-join\"`n\");&$s" %*&@pause
 @exit /b %errorlevel%
 '''
 
@@ -24,7 +24,7 @@ prefix = ""
 suffix = "_w"
 ext = ".cmd"
 header = '''
-@set __SCRIPTPATH=%~f0&@powershell -NoProfile -ExecutionPolicy ByPass -InputFormat None "$s=[scriptblock]::create((gc -enc utf8 -li \\"%~f0\\"|?{$_.readcount -gt 2})-join\\"`n\\");&$s" %*&@ping -n 30 localhost > nul
+@set __SCRIPTPATH=%~f0&@powershell -NoProfile -ExecutionPolicy ByPass -InputFormat None "$s=[scriptblock]::create((gc -enc utf8 -li \"%~f0\"|?{$_.readcount -gt 2})-join\"`n\");&$s" %*&@ping -n 30 localhost > nul
 @exit /b %errorlevel%
 '''
 
