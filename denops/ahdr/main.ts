@@ -1,13 +1,25 @@
 import * as _ from "https://cdn.skypack.dev/lodash@4.17.21";
-import * as fn from "https://deno.land/x/denops_std@v2.0.0/function/mod.ts";
-import * as fs from "https://deno.land/std@0.108.0/fs/mod.ts";
-import * as helper from "https://deno.land/x/denops_std@v2.0.0/helper/mod.ts";
-import * as op from "https://deno.land/x/denops_std@v2.0.0/option/mod.ts";
-import * as path from "https://deno.land/std@0.108.0/path/mod.ts";
-import * as toml from "https://deno.land/std@0.108.0/encoding/toml.ts";
-import * as vars from "https://deno.land/x/denops_std@v2.0.0/variable/mod.ts";
-import type { Denops } from "https://deno.land/x/denops_std@v2.0.0/mod.ts";
-import { ensureString } from "https://deno.land/x/unknownutil@v1.1.2/mod.ts";
+import * as fn from "https://deno.land/x/denops_std@v3.3.1/function/mod.ts";
+import * as fs from "https://deno.land/std@0.142.0/fs/mod.ts";
+import * as helper from "https://deno.land/x/denops_std@v3.3.1/helper/mod.ts";
+import * as op from "https://deno.land/x/denops_std@v3.3.1/option/mod.ts";
+import * as path from "https://deno.land/std@0.142.0/path/mod.ts";
+import * as toml from "https://deno.land/std@0.142.0/encoding/toml.ts";
+import * as vars from "https://deno.land/x/denops_std@v3.3.1/variable/mod.ts";
+import type { Denops } from "https://deno.land/x/denops_std@v3.3.1/mod.ts";
+import { ensureString } from "https://deno.land/x/unknownutil@v2.0.0/mod.ts";
+
+function existsSync(filePath: string): boolean {
+  try {
+    Deno.lstatSync(filePath);
+    return true;
+  } catch (err) {
+    if (err instanceof Deno.errors.NotFound) {
+      return false;
+    }
+    throw err;
+  }
+}
 
 export async function main(denops: Denops): Promise<void> {
   // debug.
@@ -29,7 +41,7 @@ export async function main(denops: Denops): Promise<void> {
     (await vars.g.get(denops, "ahdr_cfg_path", "~/.ahdr.toml")) as string,
   )) as string;
   clog(`g:ahdr_cfg_path = ${userToml}`);
-  if (await fs.exists(userToml)) {
+  if (existsSync(userToml)) {
     clog(`Merge user config: ${userToml}`);
     cfg = _.mergeWith(
       cfg,
@@ -85,7 +97,7 @@ export async function main(denops: Denops): Promise<void> {
 
         await fs.ensureDir(path.dirname(outpath));
 
-        if (await fs.exists(outpath)) {
+        if (existsSync(outpath)) {
           clog(`Remove ${outpath}`);
           await Deno.remove(outpath);
         }
