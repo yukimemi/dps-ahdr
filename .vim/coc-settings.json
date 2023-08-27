@@ -3,8 +3,11 @@
   "deno.lint": true,
   "deno.unstable": true,
   "prettier.disableLanguages": [
+    "javascript",
+    "javascriptreact",
     "typescript",
-    "javascript"
+    "typescriptreact"
   ],
-  "tsserver.enable": false
+  "tsserver.enable": false,
+  "coc.source.file.trimSameExts": []
 }

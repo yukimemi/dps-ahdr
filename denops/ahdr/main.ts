@@ -7,7 +7,7 @@ import * as path from "https://deno.land/std@0.188.0/path/mod.ts";
 import * as toml from "https://deno.land/std@0.188.0/toml/mod.ts";
 import * as vars from "https://deno.land/x/denops_std@v5.0.0/variable/mod.ts";
 import type { Denops } from "https://deno.land/x/denops_std@v5.0.0/mod.ts";
-import { ensureString } from "https://deno.land/x/unknownutil@v2.1.1/mod.ts";
+import { assert, is } from "https://deno.land/x/unknownutil@v3.5.1/mod.ts";
 
 function existsSync(filePath: string): boolean {
   try {
@@ -55,7 +55,7 @@ export async function main(denops: Denops): Promise<void> {
   denops.dispatcher = {
     async ahdr(name: unknown): Promise<void> {
       try {
-        ensureString(name);
+        assert(name, is.String);
         // Get filetype and fileformat.
         const ft = await op.filetype.get(denops);
         const ff = await op.fileformat.get(denops);
@@ -87,9 +87,7 @@ export async function main(denops: Denops): Promise<void> {
         const dst = h.dst ?? "";
         const outpath = path.join(
           path.isAbsolute(dst) ? dst : path.join(path.dirname(inpath), dst),
-          `${h.prefix}${
-            path.basename(inpath, path.extname(inpath))
-          }${h.suffix}${h.ext}`,
+          `${h.prefix}${path.basename(inpath, path.extname(inpath))}${h.suffix}${h.ext}`,
         );
 
         clog(`inpath: ${inpath}`);
