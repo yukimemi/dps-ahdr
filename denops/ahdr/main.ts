@@ -1,10 +1,10 @@
 import * as _ from "https://cdn.skypack.dev/lodash@4.17.21";
 import * as fn from "https://deno.land/x/denops_std@v5.0.1/function/mod.ts";
-import * as fs from "https://deno.land/std@0.200.0/fs/mod.ts";
+import * as fs from "https://deno.land/std@0.201.0/fs/mod.ts";
 import * as helper from "https://deno.land/x/denops_std@v5.0.1/helper/mod.ts";
 import * as op from "https://deno.land/x/denops_std@v5.0.1/option/mod.ts";
-import * as path from "https://deno.land/std@0.200.0/path/mod.ts";
-import * as toml from "https://deno.land/std@0.200.0/toml/mod.ts";
+import * as path from "https://deno.land/std@0.201.0/path/mod.ts";
+import * as toml from "https://deno.land/std@0.201.0/toml/mod.ts";
 import * as vars from "https://deno.land/x/denops_std@v5.0.1/variable/mod.ts";
 import type { Denops } from "https://deno.land/x/denops_std@v5.0.1/mod.ts";
 import { assert, is } from "https://deno.land/x/unknownutil@v3.6.0/mod.ts";
