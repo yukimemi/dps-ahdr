@@ -50,7 +50,7 @@ Default config file is L<cofnig.toml|https://github.com/yukimemi/dps-ahdr/blob/m
 
 =head1 Commands X<ahdr-commands>
 
-C<:DenopsAhdr>                                           X<:ChangeColorscheme>
+C<:DenopsAhdr>                                                   X<:DenopsAhdr>
 Add headers depending on file type.
 
 =head1 Config X<ahdr-config>

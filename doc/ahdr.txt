@@ -49,7 +49,7 @@ Default config file is cofnig.toml |https://github.com/yukimemi/dps-ahdr/blob/ma
 Commands ~
                                                               *ahdr-commands*
 
-`:DenopsAhdr`                                           *:ChangeColorscheme*
+`:DenopsAhdr`                                                   *:DenopsAhdr*
 Add headers depending on file type.
 
 =============================================================================

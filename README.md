@@ -37,7 +37,7 @@ Default config file is [cofnig.toml](https://github.com/yukimemi/dps-ahdr/blob/m
 
 # Commands 
 
-`:DenopsAhdr`                                           
+`:DenopsAhdr`                                                   
 Add headers depending on file type.
 
 # Config 
