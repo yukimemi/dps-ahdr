@@ -13,7 +13,7 @@ import * as path from "jsr:@std/path@1.0.2";
 import * as toml from "jsr:@std/toml@1.0.0";
 import * as vars from "jsr:@denops/std@7.0.0/variable";
 import type { Denops } from "jsr:@denops/std@7.0.0";
-import { assert, is } from "jsr:@core/unknownutil@3.18.1";
+import { assert, is } from "jsr:@core/unknownutil@4.0.0";
 
 function existsSync(filePath: string): boolean {
   try {
