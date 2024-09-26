@@ -5,14 +5,14 @@
 // =============================================================================
 
 import * as _ from "https://cdn.skypack.dev/lodash@4.17.21";
-import * as fn from "jsr:@denops/std@7.1.1/function";
+import * as fn from "jsr:@denops/std@7.2.0/function";
 import * as fs from "jsr:@std/fs@1.0.4";
-import * as helper from "jsr:@denops/std@7.1.1/helper";
-import * as op from "jsr:@denops/std@7.1.1/option";
+import * as helper from "jsr:@denops/std@7.2.0/helper";
+import * as op from "jsr:@denops/std@7.2.0/option";
 import * as path from "jsr:@std/path@1.0.6";
 import * as toml from "jsr:@std/toml@1.0.1";
-import * as vars from "jsr:@denops/std@7.1.1/variable";
-import type { Denops } from "jsr:@denops/std@7.1.1";
+import * as vars from "jsr:@denops/std@7.2.0/variable";
+import type { Denops } from "jsr:@denops/std@7.2.0";
 import { assert, is } from "jsr:@core/unknownutil@4.3.0";
 
 function existsSync(filePath: string): boolean {
