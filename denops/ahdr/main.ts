@@ -6,7 +6,7 @@
 
 import * as _ from "https://cdn.skypack.dev/lodash@4.17.21";
 import * as fn from "jsr:@denops/std@7.4.0/function";
-import * as fs from "jsr:@std/fs@1.0.7";
+import * as fs from "jsr:@std/fs@1.0.8";
 import * as helper from "jsr:@denops/std@7.4.0/helper";
 import * as op from "jsr:@denops/std@7.4.0/option";
 import * as path from "jsr:@std/path@1.0.8";
