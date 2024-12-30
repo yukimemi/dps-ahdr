@@ -1,10 +1,10 @@
 // =============================================================================
 // File        : main.ts
 // Author      : yukimemi
-// Last Change : 2024/07/28 20:56:33.
+// Last Change : 2024/12/30 23:09:47.
 // =============================================================================
 
-import * as _ from "https://cdn.skypack.dev/lodash@4.17.21";
+import { mergeWith } from "jsr:@es-toolkit/es-toolkit@1.31.0";
 import * as fn from "jsr:@denops/std@7.4.0/function";
 import * as fs from "jsr:@std/fs@1.0.8";
 import * as helper from "jsr:@denops/std@7.4.0/helper";
@@ -49,7 +49,7 @@ export async function main(denops: Denops): Promise<void> {
   clog(`g:ahdr_cfg_path = ${userToml}`);
   if (existsSync(userToml)) {
     clog(`Merge user config: ${userToml}`);
-    cfg = _.mergeWith(
+    cfg = mergeWith(
       cfg,
       toml.parse(await Deno.readTextFile(userToml)),
       (a: Record<string, string>[], b: Record<string, string>[]) => a.concat(b),
