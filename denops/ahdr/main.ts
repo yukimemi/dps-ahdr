@@ -6,11 +6,11 @@
 
 import { mergeWith } from "jsr:@es-toolkit/es-toolkit@1.34.1";
 import * as fn from "jsr:@denops/std@7.5.0/function";
-import * as fs from "jsr:@std/fs@1.0.15";
+import * as fs from "jsr:@std/fs@1.0.16";
 import * as helper from "jsr:@denops/std@7.5.0/helper";
 import * as op from "jsr:@denops/std@7.5.0/option";
 import * as path from "jsr:@std/path@1.0.8";
-import * as toml from "jsr:@std/toml@1.0.3";
+import * as toml from "jsr:@std/toml@1.0.4";
 import * as vars from "jsr:@denops/std@7.5.0/variable";
 import type { Denops } from "jsr:@denops/std@7.5.0";
 import { assert, is } from "jsr:@core/unknownutil@4.3.0";
