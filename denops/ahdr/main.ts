@@ -1,10 +1,10 @@
 // =============================================================================
 // File        : main.ts
 // Author      : yukimemi
-// Last Change : 2024/12/30 23:09:47.
+// Last Change : 2025/04/27 07:57:01.
 // =============================================================================
 
-import { mergeWith } from "jsr:@es-toolkit/es-toolkit@1.36.0";
+import { mergeWith } from "jsr:@es-toolkit/es-toolkit@1.35.0";
 import * as fn from "jsr:@denops/std@7.5.0/function";
 import * as fs from "jsr:@std/fs@1.0.17";
 import * as helper from "jsr:@denops/std@7.5.0/helper";
