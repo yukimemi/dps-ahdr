@@ -4,7 +4,7 @@
 // Last Change : 2025/04/27 07:57:01.
 // =============================================================================
 
-import { mergeWith } from "jsr:@es-toolkit/es-toolkit@1.39.7";
+import { mergeWith } from "jsr:@es-toolkit/es-toolkit@1.39.8";
 import * as fn from "jsr:@denops/std@7.6.0/function";
 import * as fs from "jsr:@std/fs@1.0.19";
 import * as helper from "jsr:@denops/std@7.6.0/helper";
