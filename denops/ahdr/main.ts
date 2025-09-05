@@ -10,7 +10,7 @@ import * as fs from "jsr:@std/fs@1.0.19";
 import * as helper from "jsr:@denops/std@8.0.0/helper";
 import * as op from "jsr:@denops/std@8.0.0/option";
 import * as path from "jsr:@std/path@1.1.2";
-import * as toml from "jsr:@std/toml@1.0.9";
+import * as toml from "jsr:@std/toml@1.0.10";
 import * as vars from "jsr:@denops/std@8.0.0/variable";
 import type { Denops } from "jsr:@denops/std@8.0.0";
 import { assert, is } from "jsr:@core/unknownutil@4.3.0";
