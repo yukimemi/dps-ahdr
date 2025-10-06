@@ -4,7 +4,7 @@
 // Last Change : 2025/04/27 07:53:53.
 // =============================================================================
 
-import { DenopsStub } from "jsr:@denops/test@3.0.4";
+import { DenopsStub } from "jsr:@denops/test@4.0.0";
 import { main } from "./main.ts";
 
 const createDenops = () => (
