@@ -5,14 +5,14 @@
 // =============================================================================
 
 import { mergeWith } from "jsr:@es-toolkit/es-toolkit@1.40.0";
-import * as fn from "jsr:@denops/std@8.1.0/function";
+import * as fn from "jsr:@denops/std@8.1.1/function";
 import * as fs from "jsr:@std/fs@1.0.19";
-import * as helper from "jsr:@denops/std@8.1.0/helper";
-import * as op from "jsr:@denops/std@8.1.0/option";
+import * as helper from "jsr:@denops/std@8.1.1/helper";
+import * as op from "jsr:@denops/std@8.1.1/option";
 import * as path from "jsr:@std/path@1.1.2";
 import * as toml from "jsr:@std/toml@1.0.11";
-import * as vars from "jsr:@denops/std@8.1.0/variable";
-import type { Denops } from "jsr:@denops/std@8.1.0";
+import * as vars from "jsr:@denops/std@8.1.1/variable";
+import type { Denops } from "jsr:@denops/std@8.1.1";
 import { assert, is } from "jsr:@core/unknownutil@4.3.0";
 
 function existsSync(filePath: string): boolean {
