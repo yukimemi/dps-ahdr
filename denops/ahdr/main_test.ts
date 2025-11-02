@@ -1,10 +1,10 @@
 // =============================================================================
 // File        : main_test.ts
 // Author      : yukimemi
-// Last Change : 2025/04/27 07:53:53.
+// Last Change : 2025/11/02 10:40:29.
 // =============================================================================
 
-import { DenopsStub } from "jsr:@denops/test@4.0.0";
+import { DenopsStub } from "@denops/test";
 import { main } from "./main.ts";
 
 const createDenops = () => (

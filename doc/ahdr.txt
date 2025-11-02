@@ -1,6 +1,6 @@
 *ahdr.txt*                                                 Add header plugin.
 =============================================================================
-dps-ahdr~
+ahdr.vim~
 
 Denops Add Header
 
@@ -18,7 +18,7 @@ If you use folke/lazy.nvim |https://github.com/folke/lazy.nvim|.
 
 >
 	{
-	  "yukimemi/dps-ahdr",
+	  "yukimemi/ahdr.vim",
 	  lazy = false,
 	  dependencies = {
 	    "vim-denops/denops.vim",
@@ -29,7 +29,7 @@ If you use folke/lazy.nvim |https://github.com/folke/lazy.nvim|.
 If you use yukimemi/dvpm |https://github.com/yukimemi/dvpm|.
 
 >
-	dvpm.add({ url: "yukimemi/dps-ahdr" });
+	dvpm.add({ url: "yukimemi/ahdr.vim" });
 <
 
 =============================================================================
@@ -43,7 +43,7 @@ Usage ~
                                                                  *ahdr-usage*
 
 No special settings are required.
-Default config file is cofnig.toml |https://github.com/yukimemi/dps-ahdr/blob/main/denops/ahdr/config.toml|
+Default config file is cofnig.toml |https://github.com/yukimemi/ahdr.vim/blob/main/denops/ahdr/config.toml|
 
 =============================================================================
 Commands ~

@@ -1,19 +1,19 @@
 // =============================================================================
 // File        : main.ts
 // Author      : yukimemi
-// Last Change : 2025/04/27 07:57:01.
+// Last Change : 2025/11/02 10:39:47.
 // =============================================================================
 
-import { mergeWith } from "jsr:@es-toolkit/es-toolkit@1.41.0";
-import * as fn from "jsr:@denops/std@8.1.1/function";
-import * as fs from "jsr:@std/fs@1.0.19";
-import * as helper from "jsr:@denops/std@8.1.1/helper";
-import * as op from "jsr:@denops/std@8.1.1/option";
-import * as path from "jsr:@std/path@1.1.2";
-import * as toml from "jsr:@std/toml@1.0.11";
-import * as vars from "jsr:@denops/std@8.1.1/variable";
-import type { Denops } from "jsr:@denops/std@8.1.1";
-import { assert, is } from "jsr:@core/unknownutil@4.3.0";
+import { mergeWith } from "@es-toolkit/es-toolkit";
+import * as fn from "@denops/std/function";
+import * as fs from "@std/fs";
+import * as helper from "@denops/std/helper";
+import * as op from "@denops/std/option";
+import * as path from "@std/path";
+import * as toml from "@std/toml";
+import * as vars from "@denops/std/variable";
+import type { Denops } from "@denops/std";
+import { assert, is } from "@core/unknownutil";
 
 function existsSync(filePath: string): boolean {
   try {
